@@ -1,0 +1,45 @@
+Resources:
+  TableSchema:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.TABLE_NAME}
+      AttributeDefinitions:
+        - AttributeName: pid
+          AttributeType: S
+        - AttributeName: sid
+          AttributeType: S
+        - AttributeName: uid
+          AttributeType: S
+        - AttributeName: dtype
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pid
+          KeyType: HASH
+        - AttributeName: dtype
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: 'inverse'
+          KeySchema:
+            - AttributeName: dtype
+              KeyType: HASH
+            - AttributeName: pid
+              KeyType: RANGE
+          Projection:
+            ProjectionType: 'ALL'
+        - IndexName: 'relationship'
+          KeySchema:
+            - AttributeName: sid
+              KeyType: HASH
+            - AttributeName: dtype
+              KeyType: RANGE
+          Projection:
+            ProjectionType: 'ALL'
+        - IndexName: 'ownership'
+          KeySchema:
+            - AttributeName: uid
+              KeyType: HASH
+            - AttributeName: dtype
+              KeyType: RANGE
+          Projection:
+            ProjectionType: 'ALL'
+      BillingMode: PAY_PER_REQUEST
