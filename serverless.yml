@@ -45,6 +45,22 @@ functions:
           path: article
           method: post
           cors: true
+  commentArticle:
+    handler: functions/commentArticle.handler
+    memorySize: 128
+    events:
+      - http:
+          path: article/{articleId}/comment
+          method: post
+          cors: true
+  articleWithComment:
+    handler: functions/articleWithComment.handler
+    memorySize: 128
+    events:
+      - http:
+          path: article-with-comment/{articleId}
+          method: get
+          cors: true
   getArticle:
     handler: functions/getArticle.handler
     memorySize: 128
@@ -68,14 +84,6 @@ functions:
       - http:
           path: article
           method: get
-          cors: true
-  commentArticle:
-    handler: functions/commentArticle.handler
-    memorySize: 128
-    events:
-      - http:
-          path: article/{articleId}/comment
-          method: post
           cors: true
   getComment:
     handler: functions/getComment.handler

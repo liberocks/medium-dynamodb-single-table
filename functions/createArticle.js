@@ -6,14 +6,15 @@ export const handler = async (event, context) => {
   try {
     const body = JSON.parse(event.body)
     const headers = event.headers
+    const id = (new ObjectID()).toString()
 
     const action = 'put'
     const params = {
       TableName: process.env.TABLE_NAME,
       Item: {
-        pid: (new ObjectID()).toString(),
+        pid: id,
         uid: headers['x-uid'],
-        sid: body.category,
+        sid: id,
         dtype: 'ARTICLE',
         data: {
           title: body.title,
