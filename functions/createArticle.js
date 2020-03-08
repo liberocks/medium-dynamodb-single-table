@@ -13,11 +13,11 @@ export const handler = async (event, context) => {
       Item: {
         pid: (new ObjectID()).toString(),
         uid: headers['x-uid'],
+        sid: body.category,
         dtype: 'ARTICLE',
         data: {
           title: body.title,
           content: body.content,
-          category: body.category,
           isEdited: false
         }
       }
