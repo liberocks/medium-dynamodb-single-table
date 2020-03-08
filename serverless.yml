@@ -37,78 +37,29 @@ provider:
         - "arn:aws:dynamodb:*:*:table/${self:custom.TABLE_NAME}/index/*"
 
 functions:
-  createArticle:
-    handler: functions/createArticle.handler
+  createUser:
+    handler: functions/createUser.handler
     memorySize: 128
     events:
       - http:
-          path: article
+          path: user
           method: post
           cors: true
-  commentArticle:
-    handler: functions/commentArticle.handler
+  createOrder:
+    handler: functions/createOrder.handler
     memorySize: 128
     events:
       - http:
-          path: article/{articleId}/comment
+          path: user/{userId}/order
           method: post
           cors: true
-  articleWithComment:
-    handler: functions/articleWithComment.handler
+  userOrder:
+    handler: functions/userOrder.handler
     memorySize: 128
     events:
       - http:
-          path: article-with-comment/{articleId}
+          path: user/{userId}
           method: get
           cors: true
-  getArticle:
-    handler: functions/getArticle.handler
-    memorySize: 128
-    events:
-      - http:
-          path: article/{articleId}
-          method: get
-          cors: true
-  userArticle:
-    handler: functions/userArticle.handler
-    memorySize: 128
-    events:
-      - http:
-          path: user/{userId}/article
-          method: get
-          cors: true
-  listArticle:
-    handler: functions/listArticle.handler
-    memorySize: 128
-    events:
-      - http:
-          path: article
-          method: get
-          cors: true
-  getComment:
-    handler: functions/getComment.handler
-    memorySize: 128
-    events:
-      - http:
-          path: comment/{commentId}
-          method: get
-          cors: true
-  listComment:
-    handler: functions/listComment.handler
-    memorySize: 128
-    events:
-      - http:
-          path: article/{articleId}/comment
-          method: get
-          cors: true
-  userComment:
-    handler: functions/userComment.handler
-    memorySize: 128
-    events:
-      - http:
-          path: user/{userId}/comment
-          method: get
-          cors: true
-
 resources:
   - ${file(resources/dynamodb-table.yml)}

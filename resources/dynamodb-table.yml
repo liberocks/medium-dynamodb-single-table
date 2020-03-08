@@ -4,41 +4,23 @@ Resources:
     Properties:
       TableName: ${self:custom.TABLE_NAME}
       AttributeDefinitions:
-        - AttributeName: pid
+        - AttributeName: pk
           AttributeType: S
-        - AttributeName: sid
+        - AttributeName: sk
           AttributeType: S
-        - AttributeName: uid
-          AttributeType: S
-        - AttributeName: dtype
+        - AttributeName: data
           AttributeType: S
       KeySchema:
-        - AttributeName: pid
+        - AttributeName: pk
           KeyType: HASH
-        - AttributeName: dtype
+        - AttributeName: sk
           KeyType: RANGE
       GlobalSecondaryIndexes:
-        - IndexName: 'inverse'
+        - IndexName: 'gsi'
           KeySchema:
-            - AttributeName: dtype
+            - AttributeName: sk
               KeyType: HASH
-            - AttributeName: pid
-              KeyType: RANGE
-          Projection:
-            ProjectionType: 'ALL'
-        - IndexName: 'relationship'
-          KeySchema:
-            - AttributeName: sid
-              KeyType: HASH
-            - AttributeName: dtype
-              KeyType: RANGE
-          Projection:
-            ProjectionType: 'ALL'
-        - IndexName: 'ownership'
-          KeySchema:
-            - AttributeName: uid
-              KeyType: HASH
-            - AttributeName: dtype
+            - AttributeName: data
               KeyType: RANGE
           Projection:
             ProjectionType: 'ALL'

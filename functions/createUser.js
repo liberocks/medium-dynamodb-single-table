@@ -5,21 +5,20 @@ const ObjectID = require('bson').ObjectID
 export const handler = async (event, context) => {
   try {
     const body = JSON.parse(event.body)
-    const headers = event.headers
     const id = (new ObjectID()).toString()
 
     const action = 'put'
     const params = {
       TableName: process.env.TABLE_NAME,
       Item: {
-        pid: id,
-        uid: headers['x-uid'],
-        sid: id,
-        dtype: 'ARTICLE',
+        pk: `USER#${id}`,
+        sk: `PROFILE#${id}`,
         data: {
-          title: body.title,
-          content: body.content,
-          isEdited: false
+          username: body.username,
+          fullname: body.fullname,
+          email: body.email,
+          createdAt: body.createdAt,
+          address: body.address
         }
       }
     }

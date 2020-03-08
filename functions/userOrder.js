@@ -7,11 +7,10 @@ export const handler = async (event, context) => {
 
     const params = {
       TableName: process.env.TABLE_NAME,
-      IndexName: 'relationship',
-      KeyConditionExpression: 'sid = :s AND dtype = :t',
+      IndexName: 'gsi',
+      KeyConditionExpression: 'sk = :s',
       ExpressionAttributeValues: {
-        ':s': path.articleId,
-        ':t': 'COMMENT'
+        ':s': path.userId
       }
     }
 
@@ -22,11 +21,7 @@ export const handler = async (event, context) => {
     }
 
     if (event.queryStringParameters && 'LastEvaluatedKey' in event.queryStringParameters) {
-      params.ExclusiveStartKey = {
-        pid: event.queryStringParameters.LastEvaluatedKey,
-        sid: path.articleId,
-        dtype: 'COMMENT'
-      }
+      params.ExclusiveStartKey = JSON.parse(event.queryStringParameters.LastEvaluatedKey)
     }
 
     const comments = await dynamo.exec('query', params)
@@ -34,7 +29,7 @@ export const handler = async (event, context) => {
       documents: comments.Items,
       length: comments.Items.length,
       hasNext: 'LastEvaluatedKey' in comments,
-      LastEvaluatedKey: 'LastEvaluatedKey' in comments ? comments.LastEvaluatedKey : {}
+      LastEvaluatedKey: 'LastEvaluatedKey' in comments ? JSON.stringify(comments.LastEvaluatedKey) : ''
     })
   } catch (error) {
     console.error(error)
